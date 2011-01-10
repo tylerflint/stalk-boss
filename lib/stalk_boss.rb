@@ -17,21 +17,29 @@ module Stalker
 end
 module StalkBoss
     class Stalk
-      attr_accessor :pipe, :worker, :log
+      attr_accessor :pipes, :worker, :workers, :log
       
-      def initialize(worker, log=nil?)
-        super
-        @worker = worker
-        @log    = log
+      def pipes
+        @pipes ||= []
       end
       
-      def pid
-        @pipe.pid unless @pipe.nil?
+      def initialize(worker, workers=1, log=nil)
+        super
+        @worker  = worker
+        @workers = workers
+        @log     = log
+      end
+      
+      def pids
+        @pipes.map(&:pid) unless @pipe.nil?
       end
       
       def start
-        @pipe = IO.popen("bossed_stalk #{@worker} #{@log}")
+        (1..@workers).each do
+          @pipes << IO.popen("bossed_stalk #{@worker} #{@log}")
+        end
       end
+      
       
     end
     
@@ -40,18 +48,26 @@ module StalkBoss
     end
     
     def stalk_job(worker, options={}, &block)
-      stalk = Stalk.new(worker, options[:log])
+      stalk = Stalk.new(worker, options[:workers], options[:log])
       yield(stalk) if block_given?
       stalk_jobs << stalk
       stalk
     end
     
     def term
-      stalk_jobs.each{ |s| Process.kill 'INT', s.pid }
+      stalk_jobs.each do |s| 
+        s.pids.each do |pid|
+          Process.kill 'INT', pid 
+        end
+      end
     end
 
     def soft_quit
-      stalk_jobs.each{ |s| Process.kill 'QUIT', s.pid }
+      stalk_jobs.each do |s| 
+        s.pids.each do |pid|
+          Process.kill 'QUIT', pid 
+        end
+      end
     end
     
     def start
