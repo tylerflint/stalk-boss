@@ -55,23 +55,26 @@ module StalkBoss
     end
     
     def term
-      stalk_jobs.each do |s| 
-        s.pids.each do |pid|
-          Process.kill 'INT', pid 
-        end
-      end
+      send_signal('INT')
     end
 
     def soft_quit
-      stalk_jobs.each do |s| 
-        s.pids.each do |pid|
-          Process.kill 'QUIT', pid 
-        end
-      end
+      send_signal('QUIT')
     end
     
     def start
       stalk_jobs.each{ |s| s.start }      
+    end
+    
+    private
+    
+    def send_signal(sig)
+      stalk_jobs.each do |s| 
+        s.pids.each do |pid|
+          Process.kill sig, pid 
+        end
+      end
+      stalk_jobs = []
     end
     
 end
