@@ -16,20 +16,20 @@ require file
 
 trap('INT') do
 	puts "\rExiting"
-	StalkBoss.term
+	term
 	exit
 end
 
 trap('QUIT') do
-	StalkBoss.soft_quit
+	soft_quit
 end
 
 trap('USR2') do
-	StalkBoss.soft_quit
-  StalkBoss.start
+	soft_quit
+  start
 end
 
-StalkBoss.start
+start
 
 # go to sleep forever!
 sleep

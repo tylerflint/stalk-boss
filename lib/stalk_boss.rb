@@ -35,8 +35,9 @@ module StalkBoss
       end
       
       def start
+        puts @workers
         (1..@workers).each do
-          @pipes << IO.popen("bossed_stalk #{@worker} #{@log}")
+          pipes << IO.popen("bossed_stalk #{@worker} #{@log}")
         end
       end
       
@@ -63,7 +64,7 @@ module StalkBoss
     end
     
     def start
-      stalk_jobs.each{ |s| s.start }      
+      stalk_jobs.each{ |s| s.start }
     end
     
     private
