@@ -8,7 +8,7 @@ Jeweler::Tasks.new do |s|
 	s.description = "A wrapper for adding hot reloading to Stalker"
 	s.author = "Ryan Dew"
 	s.email = "ryan@delorum.com"
-	s.executables = [ "stalk_boss", "bossed_stock" ]
+	s.executables = [ "stalk_boss", "bossed_stalk" ]
 
 	s.add_dependency 'stalker'
 
