@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+STDERR.sync = STDOUT.sync = true
+
+require 'stalker'
+require  File.expand_path('../../lib/stalk_boss', __FILE__)
+include Stalker
+
+usage = "stalk <jobs.rb> [<job>[,<job>,..]]"
+file = ARGV.shift or abort usage
+jobs = ARGV.shift.split(',') rescue nil
+
+file = "./#{file}" unless file.match(/^[\/.]/)
+
+require file
+
+trap('QUIT') do
+	puts "\rSafely Exiting"
+	Stalker.soft_quit = true
+end
+
+trap('INT') do
+	puts "\rExiting"
+	exit
+end
+
+Stalker.work jobs

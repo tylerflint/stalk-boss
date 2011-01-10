@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+
+STDERR.sync = STDOUT.sync = true
+
+require  File.expand_path('../../lib/stalk_boss', __FILE__)
+include StalkBoss
+
+usage = "stalk_boss <stalk_boss_config.rb>"
+file = ARGV.shift or abort usage
+
+file = "./#{file}" unless file.match(/^[\/.]/)
+
+require file
+
+trap('INT') do
+	puts "\rExiting"
+	StalkBoss.term
+	exit
+end
+
+trap('QUIT') do
+	StalkBoss.soft_quit
+end
+
+trap('USR2') do
+  StalkBoss.start
+	StalkBoss.soft_quit
+end
+
+StalkBoss.start
