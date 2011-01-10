@@ -30,3 +30,6 @@ trap('USR2') do
 end
 
 StalkBoss.start
+
+# go to sleep forever!
+sleep
