@@ -31,7 +31,7 @@ module StalkBoss
       end
       
       def pids
-        @pipes.map(&:pid) unless @pipe.nil?
+        @pipes.map(&:pid)
       end
       
       def start
