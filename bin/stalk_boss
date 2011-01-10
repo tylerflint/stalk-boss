@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'stalker'
+
 STDERR.sync = STDOUT.sync = true
 
 require  File.expand_path('../../lib/stalk_boss', __FILE__)
@@ -23,8 +25,8 @@ trap('QUIT') do
 end
 
 trap('USR2') do
-  StalkBoss.start
 	StalkBoss.soft_quit
+  StalkBoss.start
 end
 
 StalkBoss.start
