@@ -3,7 +3,7 @@ require 'rspec/core/rake_task'
 require 'jeweler'
 
 Jeweler::Tasks.new do |s|
-	s.name = "stalk_boss"
+	s.name = "stalk-boss"
 	s.summary = "A wrapper for adding hot reloading to Stalker."
 	s.description = "A wrapper for adding hot reloading to Stalker"
 	s.author = "Ryan Dew"
@@ -14,5 +14,6 @@ Jeweler::Tasks.new do |s|
 
 	s.files = FileList["[A-Z]*", "{bin,lib}/**/*"]
 end
+Jeweler::GemcutterTasks.new
 
 RSpec::Core::RakeTask.new(:test)
