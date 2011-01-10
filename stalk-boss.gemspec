@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.date = %q{2011-01-10}
   s.description = %q{A wrapper for adding hot reloading to Stalker}
   s.email = %q{ryan@delorum.com}
-  s.executables = ["stalk_boss", "bossed_stock"]
+  s.executables = ["stalk_boss", "bossed_stalk"]
   s.extra_rdoc_files = [
     "README"
   ]
