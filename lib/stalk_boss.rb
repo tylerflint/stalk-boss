@@ -1,7 +1,6 @@
 module Stalker
   def soft_quit?
-    @soft_quit = false if @soft_quit.nil?
-    @soft_quit
+    @soft_quit ||= false
   end
 
   def soft_quit=(soft_quit)
