@@ -22,11 +22,13 @@ end
 
 trap('QUIT') do
 	soft_quit
+	exit
 end
 
 trap('USR2') do
 	soft_quit
   start
+  sleep
 end
 
 start
