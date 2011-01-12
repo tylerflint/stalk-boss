@@ -69,8 +69,11 @@ module StalkBoss
     private
     
     def send_signal(sig)
-      stalk_jobs.each do |s| 
+      puts "send_signal #{sig}"
+      puts "stalk_jobs count: #{stalk_jobs.length}"
+      stalk_jobs.each do |s|
         s.pids.each do |pid|
+          puts "Process.kill #{sig} #{pid}"
           Process.kill sig, pid 
         end
       end
