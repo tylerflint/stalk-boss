@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{stalk-boss}
-  s.version = "0.1.7"
+  s.version = "0.1.8"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ryan Dew"]
-  s.date = %q{2011-01-11}
+  s.date = %q{2011-01-12}
   s.description = %q{A wrapper for adding hot reloading to Stalker}
   s.email = %q{ryan@delorum.com}
   s.executables = ["stalk_boss", "bossed_stalk"]
