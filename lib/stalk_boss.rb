@@ -4,24 +4,37 @@ module Stalker
   end
 
   def soft_quit=(soft_quit)
+    exit if !job_in_progress? && soft_quit
     @soft_quit = soft_quit
   end
   
+  def job_in_progress?
+    @in_progress ||= false
+  end
+  
   alias :work_one_job_stalker :work_one_job
-
+  alias :log_job_begin_stalker :log_job_begin
+  alias :log_job_end_stalker :log_job_end
+  
   def work_one_job
     exit if soft_quit?
     work_one_job_stalker
+  end
+  
+  def log_job_begin(name, args)
+    @in_progress = true
+    log_job_begin_stalker(name, args)
+  end
+  
+  def log_job_end(name, failed=false)
+    @in_progress = false
+    log_job_end_stalker(name, failed)
   end
   
 end
 module StalkBoss
     class Stalk
       attr_accessor :pipes, :worker, :workers, :log
-      
-      def pipes
-        @pipes ||= []
-      end
       
       def initialize(worker, workers=1, log=nil)
         super
@@ -31,16 +44,17 @@ module StalkBoss
       end
       
       def pids
-        @pipes.map(&:pid)
+        @pids ||= []
       end
       
       def start
         (1..@workers).each do
-          pipes << IO.popen("bossed_stalk #{@worker} > #{@log} 2>&1")
+          pids << fork do
+            STDOUT.reopen(File.open(@log, 'a'))
+            exec 'bossed_stalk', @worker
+          end
         end
       end
-      
-      
     end
     
     def stalk_jobs
@@ -69,11 +83,8 @@ module StalkBoss
     private
     
     def send_signal(sig)
-      puts "send_signal #{sig}"
-      puts "stalk_jobs count: #{stalk_jobs.length}"
       stalk_jobs.each do |s|
         s.pids.each do |pid|
-          puts "Process.kill #{sig} #{pid}"
           Process.kill sig, pid 
         end
       end
