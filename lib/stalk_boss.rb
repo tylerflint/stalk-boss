@@ -34,13 +34,14 @@ module Stalker
 end
 module StalkBoss
     class Stalk
-      attr_accessor :pipes, :worker, :workers, :log
+      attr_accessor :worker, :workers, :log, :error_log
       
-      def initialize(worker, workers=1, log=nil)
+      def initialize(worker, workers=1, log=nil, error_log=nil)
         super
-        @worker  = worker
-        @workers = workers
-        @log     = log
+        @worker    = worker
+        @workers   = workers
+        @log       = log
+        @error_log = error_log
       end
       
       def pids
@@ -50,7 +51,8 @@ module StalkBoss
       def start
         (1..@workers).each do
           pids << fork do
-            STDOUT.reopen(File.open(@log, 'a'))
+            STDOUT.reopen(File.open(@log, 'a')) if @log
+            STDERR.reopen(File.open(@error_log, 'a')) if @error_log
             exec 'bossed_stalk', @worker
           end
         end

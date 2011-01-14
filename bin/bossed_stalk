@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-STDERR.sync = STDOUT.sync = true
-
 require 'stalker'
 require  File.expand_path('../../lib/stalk_boss', __FILE__)
 include Stalker
