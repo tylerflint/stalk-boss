@@ -14,10 +14,12 @@ file = "./#{file}" unless file.match(/^[\/.]/)
 
 require file
 
-trap('INT') do
-	puts "\rExiting"
-	term
-	exit
+["TERM", "INT"].each do |signal|
+  trap(signal) do
+    puts "\r Exiting"
+    term
+    exit
+  end
 end
 
 trap('QUIT') do
