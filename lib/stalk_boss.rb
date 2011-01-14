@@ -53,6 +53,7 @@ module StalkBoss
           pids << fork do
             STDOUT.reopen(File.open(@log, 'a')) if @log
             STDERR.reopen(File.open(@error_log, 'a')) if @error_log
+            STDERR.sync = STDOUT.sync = true
             exec 'bossed_stalk', @worker
           end
         end
