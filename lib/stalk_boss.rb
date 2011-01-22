@@ -90,6 +90,9 @@ module StalkBoss
         s.pids.each do |pid|
           Process.kill sig, pid
           Process.detach pid
+          rescue Errno::ESRCH, Errno::ENOENT
+            # do nothing, we don't care if were missing a pid that we're
+            # trying to murder already
         end
       end
       stalk_jobs = []
