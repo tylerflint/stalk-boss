@@ -88,7 +88,8 @@ module StalkBoss
     def send_signal(sig)
       stalk_jobs.each do |s|
         s.pids.each do |pid|
-          Process.kill sig, pid 
+          Process.kill sig, pid
+          Process.detach pid
         end
       end
       stalk_jobs = []
